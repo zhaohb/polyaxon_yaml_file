@@ -1,0 +1,22 @@
+version: 1.1
+kind: component
+name: gpu-tfjob 
+run:
+  kind: tfjob
+  worker:
+    replicas: 1
+    container:
+      name: gpu-tfjob-worker1
+      image: polyaxon-tf:1.6.0-devel-gpu-py36-polyaxon
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      resources:
+        limits:
+          nvidia.com/gpu: 1
+  ps:
+    replicas: 1
+    container:
+      name: gpu-tfjob-ps1
+      image: polyaxon-tf:1.6.0-devel-gpu-py36-polyaxon
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo hello; sleep 10;done"]

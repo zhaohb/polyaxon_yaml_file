@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fpga
+  namespace: polyaxon
+spec:
+  hostPID: true
+  containers:
+    - name: fpga
+      image: autosplite:v2
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      securityContext:
+        privileged: true
+        capabilities:
+          add: ["SYS_RAWIO"]
+      volumeMounts: 
+      - name: fpga-bsp
+        mountPath: /mnt/
+      resources:
+        limits:
+          hostdev.k8s.io/dev_aclf10a_sr2x8g0: 1
+  volumes:
+  - name: fpga-bsp
+    hostPath:
+      path: /mnt

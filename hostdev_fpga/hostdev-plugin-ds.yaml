@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: hostdev-device-plugin
+  namespace: polyaxon
+  labels:
+    app: hostdev-device-plugin-ds
+spec:
+  selector:
+    matchLabels: 
+      app: hostdev-device-plugin-ds
+  template:
+    metadata:
+      labels:
+        app: hostdev-device-plugin-ds
+    spec:
+      tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      hostNetwork: true
+      containers:
+      - name: hostdev
+        image: ccr.ccs.tencentyun.com/paas/hostdev:latest
+        args: ["--devs", "/dev/aclf10a_sr2x8g0:rwm"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: device-plugin
+          mountPath: /var/lib/kubelet/device-plugins
+        - name: dev
+          mountPath: /dev
+      volumes:
+      - name: device-plugin
+        hostPath:
+          path: /var/lib/kubelet/device-plugins
+      - name: dev
+        hostPath:
+          path: /dev

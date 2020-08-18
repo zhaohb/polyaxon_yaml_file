@@ -1,0 +1,21 @@
+version: 1.1
+kind: component
+name: gpu-tfjob 
+run:
+  kind: tfjob
+  worker:
+    replicas: 1
+    init:
+    - git: {"url": "https://github.com/zhaohb/tensorflow_distributed_example.git"}
+    container:
+      name: gpu-tfjob-worker1
+      image: daocloud.io/daocloud/tensorflow:1.6.0-devel-gpu-py3
+      command: ["python", "-u", "{{ globals.artifacts_path }}/tensorflow_distributed_example/mnist_tf_dist.py"]
+      args: [
+             "--job_name=worker",
+             "--task_index=0",
+             "--device=gpu:0"
+            ]
+      resources:
+        limits:
+          nvidia.com/gpu: 1

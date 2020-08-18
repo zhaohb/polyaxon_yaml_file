@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ng-nohostdev
+  namespace: polyaxon
+spec:
+  containers:
+    - name: ng
+      image: nginx:alpine
+      securityContext:
+        capabilities:
+          add: ["SYS_RAWIO"]

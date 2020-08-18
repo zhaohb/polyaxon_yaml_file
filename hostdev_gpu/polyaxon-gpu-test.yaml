@@ -1,0 +1,26 @@
+version: 1.1
+kind: component
+name: gpu-tf 
+run:
+  kind: job
+  environment:
+    hostPID: true
+  container:
+    name: gpu-tf
+    image: daocloud.io/daocloud/tensorflow:1.6.0-devel-gpu-py3
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo hello; sleep 10;done"]
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["SYS_RAWIO"]
+    volumeMounts: 
+    - name: fpga-bsp
+      mountPath: /mnt/
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+  volumes:
+  - name: fpga-bsp
+    hostPath:
+      path: /mnt

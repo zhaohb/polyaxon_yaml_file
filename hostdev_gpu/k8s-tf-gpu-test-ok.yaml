@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    k8s-app: gpu-test
+  name: gpu-test 
+spec:
+  containers:
+  - image: daocloud.io/daocloud/tensorflow:1.6.0-devel-gpu-py3
+    command: [ "/bin/bash", "-ce", "tail -f /dev/null" ]
+    imagePullPolicy: Always
+    name: gpu-test 
+    resources:
+      limits:
+        nvidia.com/gpu: "1"
+    volumeMounts:
+    - name: fpga-bsp
+      mountPath: /mnt/
+  volumes:
+  - name: fpga-bsp
+    hostPath:
+      path: /mnt
+

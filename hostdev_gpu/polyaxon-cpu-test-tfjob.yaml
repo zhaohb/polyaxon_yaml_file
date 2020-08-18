@@ -1,0 +1,43 @@
+version: 1.1
+kind: component
+name: gpu-tfjob 
+run:
+  kind: tfjob
+#  cleanPodPolicy: 'Running'
+  worker:
+    replicas: 2
+    container:
+      name: gpu-tfjob-worker1
+      image: polyaxon-tf:1.6.0-devel-cpu-py36-polyaxon
+#      command: ["/bin/sh"]
+#      args: ["-c", "while true; do echo hello; sleep 10;done"]
+#      resources:
+#        limits:
+#          nvidia.com/gpu: 1
+#
+      command: ["python", "-u", "/distributed-tensorflow-example/mnist_tf_dist.py"]
+      args: [
+             "--out_dir={{globals.run_outputs_path}}"
+             ]
+#      args: [
+#             "--job_name=worker",
+#             "--task_index=0",
+#             "--device=cpu:0"
+#            ]
+
+  ps:
+    replicas: 1
+    container:
+      name: gpu-tfjob-ps1
+      image: polyaxon-tf:1.6.0-devel-cpu-py36-polyaxon
+#      command: ["/bin/sh"]
+#      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      command: ["python", "-u", "/distributed-tensorflow-example/mnist_tf_dist.py"]
+      args: [
+             "--out_dir={{globals.run_outputs_path}}"
+             ]
+#      args: [
+#             "--job_name=ps",
+#             "--task_index=0",
+#             "--device=cpu:0"
+#            ]

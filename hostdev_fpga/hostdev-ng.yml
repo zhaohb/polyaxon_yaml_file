@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ng
+  namespace: polyaxon
+spec:
+  containers:
+    - name: ng
+      image: nginx:alpine
+      securityContext:
+        capabilities:
+          add: ["SYS_RAWIO"]
+      resources:
+        limits:
+          hostdev.k8s.io/dev_mem: 1
