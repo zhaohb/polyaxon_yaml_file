@@ -7,9 +7,14 @@ run:
     replicas: 1
     container:
       name: gpu-tfjob-worker1
-      image: polyaxon-tf:1.6.0-devel-gpu-py36-polyaxon
+      image: polyaxon-tf:1.5-devel-gpu-py36
       command: ["/bin/sh"]
       args: ["-c", "while true; do echo hello; sleep 10;done"]
+#      command: ["python", "-u", "/tensorflow_distributed_example/mnist_tf_dist.py"]
+#      args: [
+#             "--out_dir={{globals.run_outputs_path}}",
+#             "--device=gpu:0"
+#             ]
       resources:
         limits:
           nvidia.com/gpu: 1
@@ -17,6 +22,11 @@ run:
     replicas: 1
     container:
       name: gpu-tfjob-ps1
-      image: polyaxon-tf:1.6.0-devel-gpu-py36-polyaxon
+      image: nginx:1.14.2
+#      command: ["python", "-u", "/tensorflow_distributed_example/mnist_tf_dist.py"]
+#      args: [
+#             "--out_dir={{globals.run_outputs_path}}",
+#             "--device=gpu:0"
+#             ]
       command: ["/bin/sh"]
       args: ["-c", "while true; do echo hello; sleep 10;done"]
