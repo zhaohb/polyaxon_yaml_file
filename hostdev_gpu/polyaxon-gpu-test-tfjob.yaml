@@ -3,18 +3,20 @@ kind: component
 name: gpu-tfjob 
 run:
   kind: tfjob
+#  environment:
+#    node_selector:
+#      kubernetes.io/hostname: worker02
   worker:
     replicas: 1
     container:
       name: gpu-tfjob-worker1
       image: polyaxon-tf:1.5-devel-gpu-py36
-      command: ["/bin/sh"]
-      args: ["-c", "while true; do echo hello; sleep 10;done"]
-#      command: ["python", "-u", "/tensorflow_distributed_example/mnist_tf_dist.py"]
-#      args: [
-#             "--out_dir={{globals.run_outputs_path}}",
-#             "--device=gpu:0"
-#             ]
+#      command: ["/bin/sh"]
+#      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      command: ["python3.6", "/tensorflow_distributed_example/mnist_tf_dist.py"]
+      args: [
+             "--device=gpu:0",
+             ]
       resources:
         limits:
           nvidia.com/gpu: 1
@@ -22,11 +24,14 @@ run:
     replicas: 1
     container:
       name: gpu-tfjob-ps1
-      image: nginx:1.14.2
-#      command: ["python", "-u", "/tensorflow_distributed_example/mnist_tf_dist.py"]
-#      args: [
-#             "--out_dir={{globals.run_outputs_path}}",
-#             "--device=gpu:0"
-#             ]
-      command: ["/bin/sh"]
-      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      image: polyaxon-tf:1.5.0-devel-cpu-py36-polyaxon
+      command: ["python3.6", "/tensorflow_distributed_example/mnist_tf_dist.py"]
+      args: [
+             "--device=cpu:0",
+#             "--out_dir={{globals.run_outputs_path}}"
+             ]
+#      command: ["/bin/sh"]
+#      args: ["-c", "while true; do echo hello; sleep 10;done"]
+#      resources:
+#        limits:
+#          nvidia.com/gpu: 1

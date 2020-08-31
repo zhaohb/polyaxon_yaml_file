@@ -8,17 +8,17 @@ run:
     replicas: 2
     container:
       name: cpu-tfjob-worker1
-      image: polyaxon-tf:1.6.0-devel-cpu-py36-polyaxon
+      image: polyaxon-tf:1.5.0-devel-cpu-py36-polyaxon
 #      command: ["/bin/sh"]
 #      args: ["-c", "while true; do echo hello; sleep 10;done"]
 #      resources:
 #        limits:
 #          nvidia.com/gpu: 1
 #
-      command: ["python", "-u", "/tensorflow_distributed_example/mnist_tf_dist.py"]
-      args: [
-             "--out_dir={{globals.run_outputs_path}}"
-             ]
+      command: ["python", "/tensorflow_distributed_example/mnist_tf_dist.py"]
+#      args: [
+#             "--out_dir={{globals.run_outputs_path}}"
+#             ]
 #      args: [
 #             "--job_name=worker",
 #             "--task_index=0",
@@ -29,13 +29,13 @@ run:
     replicas: 1
     container:
       name: cpu-tfjob-ps1
-      image: polyaxon-tf:1.6.0-devel-cpu-py36-polyaxon
+      image: polyaxon-tf:1.5.0-devel-cpu-py36-polyaxon
 #      command: ["/bin/sh"]
 #      args: ["-c", "while true; do echo hello; sleep 10;done"]
-      command: ["python", "-u", "/tensorflow_distributed_example/mnist_tf_dist.py"]
-      args: [
-             "--out_dir={{globals.run_outputs_path}}"
-             ]
+      command: ["python", "/tensorflow_distributed_example/mnist_tf_dist.py"]
+#      args: [
+#             "--out_dir={{globals.run_outputs_path}}"
+#             ]
 #      args: [
 #             "--job_name=ps",
 #             "--task_index=0",

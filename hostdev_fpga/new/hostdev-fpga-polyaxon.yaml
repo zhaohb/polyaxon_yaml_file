@@ -1,0 +1,54 @@
+version: 1.1
+kind: component
+name: fpga
+run:
+  kind: tfjob
+  worker:
+    environment:
+      hostPID: true
+    replicas: 1
+    container:
+      name: fpga
+      image: tfonfpga-tf:v0.6 
+#      command: ["/bin/sh"]
+#      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      command: ["/bin/sh", "/mnt/tfdir/tfTestCase/mnist_py/mnist_fpga_polyaxon.sh"]
+      securityContext:
+        privileged: true
+        capabilities:
+          add: ["SYS_RAWIO"]
+      volumeMounts:
+      - name: fpga-bsp
+        mountPath: /mnt/
+#      resources:
+#        limits:
+#          hostdev.k8s.io/dev_aclf10a_sr2x8g0: 1
+    volumes:
+    - name: fpga-bsp
+      hostPath:
+        path: /mnt
+
+  ps:
+    environment:
+      hostPID: true
+    replicas: 1
+    container:
+      name: fpga
+      image: tfonfpga-tf:v0.6 
+#      command: ["/bin/sh"]
+#      args: ["-c", "while true; do echo hello; sleep 10;done"]
+      command: ["/bin/sh", "/mnt/tfdir/tfTestCase/mnist_py/mnist_fpga_polyaxon.sh"]
+      securityContext:
+        privileged: true
+        capabilities:
+          add: ["SYS_RAWIO"]
+      volumeMounts:
+      - name: fpga-bsp
+        mountPath: /mnt/
+#      resources:
+#        limits:
+#          hostdev.k8s.io/dev_aclf10a_sr2x8g0: 1
+    volumes:
+    - name: fpga-bsp
+      hostPath:
+        path: /mnt
