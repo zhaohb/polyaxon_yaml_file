@@ -1,0 +1,15 @@
+version: 1.1
+kind: operation
+hubRef: jupyter-hub:tensorflow
+runPatch:
+  container:
+    resources:
+      cpu:
+        requests: 2
+        limits: 4
+#      gpu:
+#        requests: 1
+#        limits: 1
+      memory:
+        requests: 512
+        limits: 2048

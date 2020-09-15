@@ -20,9 +20,9 @@ run:
       volumeMounts:
       - name: fpga-bsp
         mountPath: /mnt/
-#      resources:
-#        limits:
-#          hostdev.k8s.io/dev_aclf10a_sr2x8g0: 1
+      resources:
+        limits:
+          hostdev.k8s.io/dev_aclf10a_sr2x8g0: 1
     volumes:
     - name: fpga-bsp
       hostPath:
