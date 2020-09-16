@@ -7,8 +7,8 @@ spec:
   hostPID: true
   containers:
     - name: fpga
-      image: autosplite:v2
-      command: ["/bin/sh"]
+      image: autosplit2:v2
+      command: ["/bin/bash"]
       args: ["-c", "while true; do echo hello; sleep 10;done"]
       securityContext:
         privileged: true
